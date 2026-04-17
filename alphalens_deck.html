@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlphaLens — Hackathon Pitch Deck</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #000;
+      --neon: #10E55A;
+      --text: #e6edf3;
+      --text-dim: #8b949e;
+      --text-muted: #484f58;
+      --border: #1a1f26;
+      --red: #ff3b30;
+      --yellow: #fdd458;
+      --blue: #58a6ff;
+      --purple: #bc8cff;
+      --cyan: #39d2c0;
+      --orange: #ffa657;
+    }
+
+    html,
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ══ SLIDES ══ */
+    .slide {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .si {
+      flex: 1;
+      padding: 40px 60px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      gap: 40px;
+    }
+
+    .si.col {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    /* Grid bg */
+    .gbg {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(16, 229, 90, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 229, 90, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ══ NAV ══ */
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      z-index: 1000;
+    }
+
+    .nav .br {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--neon);
+      letter-spacing: 2px;
+    }
+
+    .nav .ct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .nav .tr {
+      flex: 1;
+      max-width: 350px;
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 0 20px;
+      overflow: hidden;
+    }
+
+    .nav .fl {
+      height: 100%;
+      background: var(--neon);
+      border-radius: 2px;
+      transition: width .4s ease;
+      box-shadow: 0 0 8px rgba(16, 229, 90, 0.3);
+    }
+
+    .nav .bt {
+      display: flex;
+      gap: 5px;
+    }
+
+    .nav .bt button {
+      background: rgba(16, 229, 90, 0.08);
+      border: 1px solid rgba(16, 229, 90, 0.2);
+      color: var(--neon);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 4px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .nav .bt button:hover {
+      background: rgba(16, 229, 90, 0.15);
+    }
+
+    /* ══ TYPO ══ */
+    .sl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--neon);
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+
+    .st {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -.5px;
+      margin-bottom: 14px;
+    }
+
+    .st .hl {
+      color: var(--neon);
+    }
+
+    .st .hr {
+      color: var(--red);
+    }
+
+    .st .hb {
+      color: var(--blue);
+    }
+
+    .st .hp {
+      color: var(--purple);
+    }
+
+    .st .hc {
+      color: var(--cyan);
+    }
+
+    .st .hy {
+      color: var(--yellow);
+    }
+
+    .st .ho {
+      color: var(--orange);
+    }
+
+    .ss {
+      font-size: 15px;
+      color: var(--text-dim);
+      line-height: 1.6;
+      max-width: 600px;
+    }
+
+    /* Code */
+    .cb {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--text);
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .cb .kw {
+      color: #ff7b72;
+    }
+
+    .cb .fn {
+      color: #d2a8ff;
+    }
+
+    .cb .str {
+      color: #a5d6ff;
+    }
+
+    .cb .cmt {
+      color: #484f58;
+      font-style: italic;
+    }
+
+    .cb .n {
+      color: var(--neon);
+    }
+
+    .cb .p {
+      color: #ffa657;
+    }
+
+    /* Glass card */
+    .gc {
+      background: rgba(10, 10, 10, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      backdrop-filter: blur(20px);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gc::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 229, 90, 0.25), transparent);
+    }
+
+    /* Metric */
+    .mc {
+      background: rgba(16, 229, 90, 0.04);
+      border: 1px solid rgba(16, 229, 90, 0.12);
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+
+    .mc .l {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .mc .v {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--neon);
+    }
+
+    .mc .d {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 3px;
+    }
+
+    /* Bullets */
+    .bl {
+      list-style: none;
+    }
+
+    .bl li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .bl li::before {
+      content: '▸';
+      color: var(--neon);
+      font-size: 15px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .bl li strong {
+      color: #fff;
+    }
+
+    /* Tags */
+    .tg {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .4px;
+    }
+
+    .tg.g {
+      background: rgba(16, 229, 90, 0.1);
+      border: 1px solid rgba(16, 229, 90, 0.25);
+      color: var(--neon);
+    }
+
+    .tg.b {
+      background: rgba(88, 166, 255, 0.1);
+      border: 1px solid rgba(88, 166, 255, 0.25);
+      color: var(--blue);
+    }
+
+    .tg.p {
+      background: rgba(188, 140, 255, 0.1);
+      border: 1px solid rgba(188, 140, 255, 0.25);
+      color: var(--purple);
+    }
+
+    .tg.r {
+      background: rgba(255, 59, 48, 0.1);
+      border: 1px solid rgba(255, 59, 48, 0.25);
+      color: var(--red);
+    }
+
+    .tg.c {
+      background: rgba(57, 210, 192, 0.1);
+      border: 1px solid rgba(57, 210, 192, 0.25);
+      color: var(--cyan);
+    }
+
+    .tg.y {
+      background: rgba(253, 212, 88, 0.1);
+      border: 1px solid rgba(253, 212, 88, 0.25);
+      color: var(--yellow);
+    }
+
+    .tg.o {
+      background: rgba(255, 166, 87, 0.1);
+      border: 1px solid rgba(255, 166, 87, 0.25);
+      color: var(--orange);
+    }
+
+    /* Image placeholder */
+    .iph {
+      border: 2px dashed rgba(16, 229, 90, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      background: rgba(16, 229, 90, 0.02);
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 16px;
+    }
+
+    .iph .ico {
+      font-size: 28px;
+      opacity: 0.6;
+    }
+
+    .iph .txt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* Alert */
+    .al {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .al.r {
+      background: rgba(255, 59, 48, 0.06);
+      border: 1px solid rgba(255, 59, 48, 0.15);
+      border-left: 3px solid var(--red);
+    }
+
+    .al.g {
+      background: rgba(16, 229, 90, 0.06);
+      border: 1px solid rgba(16, 229, 90, 0.15);
+      border-left: 3px solid var(--neon);
+    }
+
+    .al.c {
+      background: rgba(57, 210, 192, 0.06);
+      border: 1px solid rgba(57, 210, 192, 0.15);
+      border-left: 3px solid var(--cyan);
+    }
+
+    /* Pipeline */
+    .pn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pn .ic {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      border: 2px solid;
+    }
+
+    .pn .lb {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .fa {
+      color: var(--neon);
+      font-size: 18px;
+      opacity: .5;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Step card filled */
+    .stp {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sn {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* Animations */
+    @keyframes fu {
+      from {
+        opacity: 0;
+        transform: translateY(16px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .au {
+      animation: fu .5s ease-out forwards;
+    }
+
+    .d1 {
+      animation-delay: .05s;
+      opacity: 0
+    }
+
+    .d2 {
+      animation-delay: .12s;
+      opacity: 0
+    }
+
+    .d3 {
+      animation-delay: .2s;
+      opacity: 0
+    }
+
+    .d4 {
+      animation-delay: .28s;
+      opacity: 0
+    }
+
+    .d5 {
+      animation-delay: .36s;
+      opacity: 0
+    }
+
+    .d6 {
+      animation-delay: .44s;
+      opacity: 0
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══ S1 — TITLE ═══ -->
+  <div class="slide active" id="s1">
+    <div class="gbg"></div>
+    <div class="glow" style="width:500px;height:500px;top:-150px;right:-50px;background:var(--neon);opacity:.06"></div>
+    <div class="si">
+      <div style="flex:1;">
+        <div class="sl au d1">WebD + ML · Hackathon 2026</div>
+        <h1 class="st au d2" style="font-size:52px;">Alpha<span class="hl">Lens</span></h1>
+        <p style="font-size:22px;font-weight:300;color:var(--text-dim);margin-bottom:20px;" class="au d3">Execute With
+          Total Dominance</p>
+        <p class="ss au d4" style="margin-bottom:24px;">
+          Institutional-grade AI & zero-latency market execution for the retail edge.
+          Multi-model ML inference, real-time NLP sentiment, RL-based risk management, anomaly detection, and
+          LPU-accelerated cognitive synthesis —
+          all orchestrated from a single premium interface.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;" class="au d5">
+          <span class="tg g">Next.js 15</span><span class="tg b">FastAPI</span><span class="tg p">Hugging Face</span>
+          <span class="tg o">PyTorch</span><span class="tg y">TensorFlow</span><span class="tg c">PPO Agent</span>
+          <span class="tg r">Groq LPU</span><span class="tg g">Multi-LLM Failover</span>
+        </div>
+      </div>
+      <div style="flex:0 0 42%;" class="au d3">
+        <div class="iph" style="height:420px; overflow:hidden; background: rgba(0,0,0,0.2); border: 1px dashed var(--neon); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+  <img 
+    src="images/dashboard.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S2 — PROBLEM ═══ -->
+  <div class="slide" id="s2">
+    <div class="gbg"></div>
+    <div class="glow" style="width:400px;height:400px;top:-100px;left:40%;background:var(--red);opacity:.04;"></div>
+    <div class="si">
+      <div style="flex:1;">
+        <div class="sl au d1">Slide 02</div>
+        <h1 class="st au d2">The Retail <span class="hr">Disadvantage</span></h1>
+        <ul class="bl au d3" style="max-width:560px;margin-top:16px;">
+          <li><strong>Fragmented Data:</strong> Traders split focus across 5+ delayed apps — news, charts, execution,
+            analytics — losing critical seconds.</li>
+          <li><strong>Algorithmic Gatekeeping:</strong> Predictive ML models, sentiment engines, and RL agents locked
+            behind institutional paywalls.</li>
+          <li><strong>Execution Latency:</strong> Traditional SPAs introduce UI blocking during heavy compute,
+            destroying split-second timing.</li>
+          <li><strong>No Risk Intelligence:</strong> Retail platforms offer zero ML-driven risk management or anomaly
+            alerting.</li>
+        </ul>
+        <div class="al r au d4" style="max-width:480px;margin-top:14px;">
+          <span style="color:var(--red);font-weight:700;">The result?</span> <span style="color:var(--text-dim);">Retail
+            traders start every session at a structural deficit vs institutional desks running custom ML
+            pipelines.</span>
+        </div>
+      </div>
+      <div style="flex:0 0 40%;" class="au d3">
+        <div class="iph" style="height:420px; overflow:hidden; background: rgba(0,0,0,0.2); border: 1px dashed var(--neon); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+  <img 
+    src="images/dashboard.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S3 — SOLUTION ═══ -->
+  <div class="slide" id="s3">
+    <div class="gbg"></div>
+    <div class="glow" style="width:500px;height:500px;top:-150px;right:-100px;background:var(--neon);opacity:.05"></div>
+    <div class="si">
+      <div style="flex:0 0 40%;" class="au d2">
+        <div class="iph" style="height:420px; overflow:hidden; background: rgba(0,0,0,0.2); border: 1px dashed var(--neon); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+  <img 
+    src="images/dashboard.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+</div>
+      </div>
+      <div style="flex:1;">
+        <div class="sl au d1">Slide 03</div>
+        <h1 class="st au d2">The AlphaLens <span class="hl">Paradigm</span></h1>
+        <p class="ss au d3" style="margin-bottom:18px;">We don't wrap APIs. We orchestrate heavy ML compute
+          <em>parallel</em> to client-side rendering.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" class="au d4">
+          <div class="mc">
+            <div class="l">ML Models</div>
+            <div class="v">4</div>
+            <div class="d">Price · Sentiment · RL · Anomaly</div>
+          </div>
+          <div class="mc">
+            <div class="l">AI Resilience</div>
+            <div class="v">Dual-Provider</div>
+            <div class="d">Zero-Downtime LLM Orchestration</div>
+          </div>
+          <div class="mc">
+            <div class="l">Frontend</div>
+            <div class="v">Next.js 15</div>
+            <div class="d">React 19 + Framer Motion</div>
+          </div>
+          <div class="mc">
+            <div class="l">Backend</div>
+            <div class="v">FastAPI</div>
+            <div class="d">PyTorch · TensorFlow · HF</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;" class="au d5">
+          <span class="tg g">Auto-Invest DCA</span><span class="tg c">Anomaly Detection</span>
+          <span class="tg y">Technical Analysis</span><span class="tg r">LPU Cognitive Layer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S4 — ARCHITECTURE (BIGGER) ═══ -->
+  <div class="slide" id="s4">
+    <div class="gbg"></div>
+    <div class="glow"
+      style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--neon);opacity:.04">
+    </div>
+    <div class="si col" style="justify-content:flex-start;padding-top:30px;">
+      <div style="margin-bottom:12px;">
+        <div class="sl au d1">Slide 04</div>
+        <h1 class="st au d2" style="font-size:32px;">System <span class="hl">Architecture</span> Overview</h1>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;" class="au d3">
+        <svg viewBox="0 0 1000 520" fill="none" xmlns="http://www.w3.org/2000/svg"
+          style="width:100%;max-height:calc(100vh - 200px);">
+          <!-- ── Lines ── -->
+          <line x1="130" y1="230" x2="200" y2="230" stroke="#10E55A" stroke-width="2" stroke-dasharray="5 3"
+            opacity=".5" />
+          <line x1="370" y1="230" x2="430" y2="230" stroke="#10E55A" stroke-width="2" stroke-dasharray="5 3"
+            opacity=".5" />
+          <!-- fan out -->
+          <path d="M580,230 Q620,230 640,115" stroke="#10E55A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".4"
+            fill="none" />
+          <path d="M580,230 Q620,230 640,210" stroke="#10E55A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".4"
+            fill="none" />
+          <path d="M580,230 Q620,230 640,305" stroke="#10E55A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".4"
+            fill="none" />
+          <path d="M580,230 Q620,230 640,400" stroke="#10E55A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".4"
+            fill="none" />
+          <!-- fan in -->
+          <path d="M810,115 Q830,115 860,230" stroke="#10E55A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".4"
+            fill="none" />
+          <path d="M810,210 Q830,210 860,230" stroke="#10E55A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".4"
+            fill="none" />
+          <path d="M810,305 Q830,305 860,230" stroke="#10E55A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".4"
+            fill="none" />
+          <path d="M810,400 Q830,400 860,230" stroke="#10E55A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".4"
+            fill="none" />
+          <!-- LLM Failover -->
+          <line x1="725" y1="440" x2="725" y2="485" stroke="#ff3b30" stroke-width="1" stroke-dasharray="3 3"
+            opacity=".3" />
+          <rect x="650" y="480" width="150" height="32" rx="7" fill="rgba(255,59,48,0.06)" stroke="#ff3b30"
+            stroke-width="1" stroke-dasharray="3 3" />
+          <text x="725" y="500" text-anchor="middle" fill="#ff3b30" font-family="JetBrains Mono" font-size="8"
+            font-weight="600">LLM Hot-Swap Failover</text>
+
+          <!-- ── NODES ── -->
+          <!-- Exchange -->
+          <rect x="10" y="185" width="120" height="90" rx="14" fill="#0d1117" stroke="#10E55A" stroke-width="1.5" />
+          <text x="70" y="215" text-anchor="middle" fill="#10E55A" font-family="JetBrains Mono" font-size="9"
+            letter-spacing="1.5">MARKET</text>
+          <text x="70" y="238" text-anchor="middle" fill="#e6edf3" font-family="Inter" font-size="14"
+            font-weight="700">Exchange</text>
+          <text x="70" y="258" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="10">OHLCV +
+            News</text>
+
+          <!-- Next.js -->
+          <rect x="200" y="175" width="170" height="110" rx="14" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5" />
+          <text x="285" y="205" text-anchor="middle" fill="#58a6ff" font-family="JetBrains Mono" font-size="9"
+            letter-spacing="1.5">FRONTEND</text>
+          <text x="285" y="228" text-anchor="middle" fill="#e6edf3" font-family="Inter" font-size="14"
+            font-weight="700">Next.js 15</text>
+          <text x="285" y="248" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="10">React 19 +
+            Framer</text>
+          <text x="285" y="265" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="10">Server
+            Actions</text>
+
+          <!-- FastAPI -->
+          <rect x="430" y="175" width="150" height="110" rx="14" fill="#0d1117" stroke="#10E55A" stroke-width="2" />
+          <text x="505" y="205" text-anchor="middle" fill="#10E55A" font-family="JetBrains Mono" font-size="9"
+            letter-spacing="1.5">BACKEND</text>
+          <text x="505" y="228" text-anchor="middle" fill="#e6edf3" font-family="Inter" font-size="14"
+            font-weight="700">FastAPI</text>
+          <text x="505" y="248" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="10">PyTorch · TF ·
+            HF</text>
+          <text x="505" y="265" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="10">Lazy Load +
+            Thread Lock</text>
+
+          <!-- Model 1: Price -->
+          <rect x="640" y="72" width="170" height="86" rx="12" fill="#0d1117" stroke="#bc8cff" stroke-width="1.5" />
+          <text x="725" y="97" text-anchor="middle" fill="#bc8cff" font-family="JetBrains Mono" font-size="8"
+            letter-spacing="1">MODEL 1: PRICE</text>
+          <text x="725" y="117" text-anchor="middle" fill="#e6edf3" font-family="Inter" font-size="13"
+            font-weight="700">CNN + RNN · 7-dim</text>
+          <text x="725" y="136" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="9">HF Inference ·
+            /predict</text>
+          <text x="725" y="150" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="9">PyTorch +
+            TensorFlow</text>
+
+          <!-- Model 2: Sentiment -->
+          <rect x="640" y="170" width="170" height="86" rx="12" fill="#0d1117" stroke="#fdd458" stroke-width="1.5" />
+          <text x="725" y="195" text-anchor="middle" fill="#fdd458" font-family="JetBrains Mono" font-size="8"
+            letter-spacing="1">MODEL 2: NLP</text>
+          <text x="725" y="215" text-anchor="middle" fill="#e6edf3" font-family="Inter" font-size="13"
+            font-weight="700">DistilRoBERTa</text>
+          <text x="725" y="234" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="9">Financial
+            PhraseBank</text>
+          <text x="725" y="248" text-anchor="middle" fill="#8b949e" font-family="Inter"
+            font-size="9">/sentiment/{ticker}</text>
+
+          <!-- Model 3: RL -->
+          <rect x="640" y="268" width="170" height="86" rx="12" fill="#0d1117" stroke="#39d2c0" stroke-width="1.5" />
+          <text x="725" y="293" text-anchor="middle" fill="#39d2c0" font-family="JetBrains Mono" font-size="8"
+            letter-spacing="1">MODEL 3: RL RISK</text>
+          <text x="725" y="313" text-anchor="middle" fill="#e6edf3" font-family="Inter" font-size="13"
+            font-weight="700">PPO · 17-dim</text>
+          <text x="725" y="332" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="9">MLP 64×64 · Diff
+            Sharpe</text>
+          <text x="725" y="346" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="9">/inference</text>
+
+          <!-- Model 4: Anomaly -->
+          <rect x="640" y="366" width="170" height="72" rx="12" fill="#0d1117" stroke="#ffa657" stroke-width="1.5" />
+          <text x="725" y="391" text-anchor="middle" fill="#ffa657" font-family="JetBrains Mono" font-size="8"
+            letter-spacing="1">MODEL 4: ANOMALY</text>
+          <text x="725" y="411" text-anchor="middle" fill="#e6edf3" font-family="Inter" font-size="13"
+            font-weight="700">Statistical Detection</text>
+          <text x="725" y="430" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="9">Vol + Z-score
+            alerts</text>
+
+          <!-- Output -->
+          <rect x="860" y="185" width="130" height="90" rx="14" fill="#0d1117" stroke="#10E55A" stroke-width="2" />
+          <text x="925" y="215" text-anchor="middle" fill="#10E55A" font-family="JetBrains Mono" font-size="9"
+            letter-spacing="1.5">OUTPUT</text>
+          <text x="925" y="238" text-anchor="middle" fill="#e6edf3" font-family="Inter" font-size="14"
+            font-weight="700">Shadowbox UI</text>
+          <text x="925" y="258" text-anchor="middle" fill="#8b949e" font-family="Inter" font-size="10">Live
+            Interpolation</text>
+
+          <!-- Labels -->
+          <text x="166" y="222" text-anchor="middle" fill="#10E55A" font-family="JetBrains Mono" font-size="8"
+            opacity=".6">OHLCV</text>
+          <text x="402" y="222" text-anchor="middle" fill="#10E55A" font-family="JetBrains Mono" font-size="8"
+            opacity=".6">POST</text>
+          <text x="845" y="222" text-anchor="middle" fill="#10E55A" font-family="JetBrains Mono" font-size="8"
+            opacity=".6">JSON</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S5 — PRICE PREDICTION ═══ -->
+  <div class="slide" id="s5">
+    <div class="gbg"></div>
+    <div class="glow" style="width:400px;height:400px;top:-100px;right:-50px;background:var(--purple);opacity:.04">
+    </div>
+    <div class="si">
+      <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <div class="sl au d1">Slide 05 · Model Deep Dive</div>
+          <h1 class="st au d2" style="font-size:34px;">Price <span class="hp">Prediction</span> Engine</h1>
+          <p class="ss au d3" style="font-size:13px;">
+            Combines CNN (spatial pattern extraction) and RNN (temporal sequence learning) into a fine-tuned ensemble.
+            Frontend POSTs OHLCV to <code
+              style="color:var(--neon);background:rgba(16,229,90,0.1);padding:1px 4px;border-radius:3px;font-family:'JetBrains Mono';font-size:11px;">/api/predict</code>,
+            delegated to HF Inference.
+          </p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" class="au d4">
+          <div class="mc">
+            <div class="l">Features</div>
+            <div class="v" style="font-size:17px;">7-dim</div>
+            <div class="d">OHLCV + derived indicators</div>
+          </div>
+          <div class="mc">
+            <div class="l">Architecture</div>
+            <div class="v" style="font-size:17px;">CNN + RNN</div>
+            <div class="d">Spatial + temporal fusion</div>
+          </div>
+          <div class="mc">
+            <div class="l">Frameworks</div>
+            <div class="v" style="font-size:17px;">PyTorch + TF</div>
+            <div class="d">HF Space deployment</div>
+          </div>
+          <div class="mc">
+            <div class="l">Forecast</div>
+            <div class="v" style="font-size:17px;">7 days</div>
+            <div class="d">Interpolated price bounds</div>
+          </div>
+        </div>
+        <div class="al r au d5">
+          <span style="color:var(--red);font-weight:600;">⚡ GRACEFUL DEGRADATION CASCADE:</span> <span
+            style="color:var(--text-dim);">If HF returns non-200 or times out (15s), system auto-cascades to statistical
+            random-walk model using live yfinance — zero UI breakage.</span>
+        </div>
+        <div class="iph au d6" style="height:120px;">
+          <img 
+    src="images/image4.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+        </div>
+      </div>
+      <div style="flex:0 0 46%;" class="au d3">
+        <div style="font-family:'JetBrains Mono';font-size:10px;color:var(--text-muted);margin-bottom:5px;">predictor.py
+          — HF Inference Integration</div>
+        <div class="cb" style="font-size:11px;">
+          <span class="cmt"># CNN extracts spatial patterns from OHLCV</span>
+          <span class="cmt"># RNN captures temporal dependencies</span>
+          <span class="cmt"># Combined → fine-tuned prediction model</span>
+
+          <span class="kw">def</span> <span class="fn">predict_symbol</span>(<span class="p">symbol</span>, <span
+            class="p">days</span>=<span class="n">7</span>,
+          <span class="p">features</span>=<span class="kw">None</span>):
+          ML_API = os.environ.get(
+          <span class="str">"ML_API_BASE_URL"</span>,
+          <span class="str">"https://...hf.space"</span>)
+
+          <span class="cmt"># 7-dim feature vector → HF Inference</span>
+          <span class="kw">if</span> features <span class="kw">and</span> <span class="fn">all</span>(k <span
+            class="kw">in</span> features
+          <span class="kw">for</span> k <span class="kw">in</span> (<span class="str">'open'</span>,<span
+            class="str">'high'</span>,<span class="str">'low'</span>,
+          <span class="str">'close'</span>,<span class="str">'volume'</span>)):
+
+          res = httpx.<span class="fn">post</span>(
+          f<span class="str">"{ML_API}/predict"</span>,
+          json={
+          <span class="str">"ticker"</span>: symbol,
+          <span class="str">"open"</span>: features[<span class="str">"open"</span>],
+          <span class="str">"high"</span>: features[<span class="str">"high"</span>],
+          <span class="str">"low"</span>: features[<span class="str">"low"</span>],
+          <span class="str">"close"</span>: features[<span class="str">"close"</span>],
+          <span class="str">"volume"</span>:features[<span class="str">"volume"</span>]
+          }, timeout=<span class="n">15.0</span>)
+
+          <span class="kw">if</span> res.status_code == <span class="n">200</span>:
+          <span class="kw">return</span> <span class="fn">interpolate_forecast</span>(res)
+
+          <span class="cmt"># FALLBACK → random-walk + yfinance</span>
+          <span class="kw">return</span> <span class="fn">mock_forecast</span>(symbol, days)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S6 — SENTIMENT ═══ -->
+  <div class="slide" id="s6">
+    <div class="gbg"></div>
+    <div class="glow" style="width:400px;height:400px;bottom:-100px;left:-50px;background:var(--yellow);opacity:.04;">
+    </div>
+    <div class="si">
+      <div style="flex:0 0 42%;display:flex;flex-direction:column;gap:14px;">
+        <div class="iph au d2" style="height:220px;">
+          <img 
+    src="images/sentiment.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-around;" class="au d4">
+          <div class="pn">
+            <div class="ic" style="background:rgba(253,212,88,0.1);border-color:var(--yellow);">📰</div>
+            <div class="lb" style="color:var(--yellow);">Finnhub<br>News</div>
+          </div>
+          <div class="fa">→</div>
+          <div class="pn">
+            <div class="ic" style="background:rgba(188,140,255,0.1);border-color:var(--purple);">🧠</div>
+            <div class="lb" style="color:var(--purple);">DistilRoBERTa<br>HF Inference</div>
+          </div>
+          <div class="fa">→</div>
+          <div class="pn">
+            <div class="ic" style="background:rgba(16,229,90,0.1);border-color:var(--neon);">📊</div>
+            <div class="lb" style="color:var(--neon);">Scored<br>Headlines</div>
+          </div>
+          <div class="fa">→</div>
+          <div class="pn">
+            <div class="ic" style="background:rgba(57,210,192,0.1);border-color:var(--cyan);">🎯</div>
+            <div class="lb" style="color:var(--cyan);">Consensus<br>Verdict</div>
+          </div>
+        </div>
+        <div class="cb au d5" style="font-size:10px;">
+          <span class="cmt"># Financial PhraseBank fine-tuned model</span>
+          pipe = <span class="fn">get_sentiment_pipeline</span>()
+          results = pipe(texts) <span class="cmt"># batch HF Inference</span>
+          <span class="cmt"># → Bullish | Bearish | Neutral</span>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div class="sl au d1">Slide 06 · Model Deep Dive</div>
+        <h1 class="st au d2" style="font-size:34px;">NLP <span class="hy">Sentiment</span> Engine</h1>
+        <ul class="bl au d3" style="font-size:13px;">
+          <li><strong>Dataset:</strong> <span style="color:var(--yellow);font-weight:600;">Financial PhraseBank</span> —
+            curated financial sentences with expert-annotated sentiment labels</li>
+          <li><strong>Model:</strong> DistilRoBERTa fine-tuned for financial text via HF Inference — zero local GPU
+            required</li>
+          <li><strong>Finnhub Integration:</strong> Smart relevance scoring — ticker + company name regex matching in
+            headlines</li>
+          <li><strong>Retry Logic:</strong> 3-attempt retry with cold-start handling (503 waits 30s for HF wake-up)</li>
+          <li><strong>Consensus Engine:</strong> Aggregates per-headline labels → Bullish / Bearish / Neutral verdict
+          </li>
+        </ul>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px;" class="au d4">
+          <div class="mc">
+            <div class="l">Model</div>
+            <div class="v" style="font-size:15px;">DistilRoBERTa</div>
+            <div class="d">Financial PhraseBank</div>
+          </div>
+          <div class="mc">
+            <div class="l">Inference</div>
+            <div class="v" style="font-size:15px;">HF Batch</div>
+            <div class="d">Zero GPU, single call</div>
+          </div>
+          <div class="mc">
+            <div class="l">Output</div>
+            <div class="v" style="font-size:15px;">3-class</div>
+            <div class="d">Pos · Neg · Neutral</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S7 — SHADOW RL ═══ -->
+  <div class="slide" id="s7">
+    <div class="gbg"></div>
+    <div class="glow" style="width:400px;height:400px;top:-100px;right:-50px;background:var(--cyan);opacity:.04;"></div>
+    <div class="si">
+      <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <div class="sl au d1">Slide 07 · Model Deep Dive</div>
+          <h1 class="st au d2" style="font-size:34px;">Shadow <span class="hc">RL Risk Manager</span></h1>
+          <p class="ss au d3" style="font-size:13px;">
+            PPO reinforcement learning agent for <strong style="color:var(--cyan);">risk management</strong>.
+            Dynamically allocates capital between asset and cash to maximize <strong
+              style="color:var(--cyan);">risk-adjusted returns</strong>.
+          </p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;" class="au d4">
+          <div class="mc">
+            <div class="l">Algorithm</div>
+            <div class="v" style="font-size:15px;">PPO</div>
+            <div class="d">Risk-aware optimization</div>
+          </div>
+          <div class="mc">
+            <div class="l">Observation</div>
+            <div class="v" style="font-size:15px;">17-dim</div>
+            <div class="d">Quant feature vector</div>
+          </div>
+          <div class="mc">
+            <div class="l">Policy</div>
+            <div class="v" style="font-size:15px;">MLP 64×64</div>
+            <div class="d">Gaussian allocation</div>
+          </div>
+        </div>
+        <div class="gc au d5" style="padding:12px;">
+          <p
+            style="font-family:'JetBrains Mono';font-size:8px;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;">
+            17-Dimensional Risk Feature Vector</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;font-size:11px;">
+            <div style="color:var(--text-dim);">📈 <span style="color:var(--text);">[0:10]</span> 10 log returns</div>
+            <div style="color:var(--text-dim);">📊 <span style="color:var(--text);">[10]</span> Fractional diff</div>
+            <div style="color:var(--text-dim);">🔥 <span style="color:var(--text);">[11-12]</span> Rolling vol 10d/20d
+            </div>
+            <div style="color:var(--text-dim);">⚠️ <span style="color:var(--text);">[13]</span> ATR regime flag</div>
+            <div style="color:var(--text-dim);">🚀 <span style="color:var(--text);">[14]</span> 20-day momentum</div>
+            <div style="color:var(--text-dim);">📉 <span style="color:var(--text);">[15]</span> SMA crossover</div>
+            <div style="color:var(--text-dim);">💰 <span style="color:var(--text);">[16]</span> Current allocation</div>
+            <div style="color:var(--cyan);">🎯 Reward: Diff Sharpe Ratio</div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:0 0 44%;display:flex;flex-direction:column;gap:12px;" class="au d3">
+        <div class="iph" style="height:200px;">
+          <img 
+    src="images/image6.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+        </div>
+        <div class="cb" style="font-size:11px;">
+          <span class="cmt"># Risk management: dynamic allocation</span>
+          <span class="cmt"># w ∈ [0,1]: 0=cash, 1=invested</span>
+          obs = inf_env.<span class="fn">reset</span>()
+          <span class="kw">while not</span> done:
+          action, _ = model.<span class="fn">predict</span>(
+          obs, deterministic=<span class="kw">True</span>)
+          <span class="cmt"># V = V × exp(w·r_asset + (1-w)·r_rf)</span>
+          <span class="cmt"># Transaction cost: 10bps + 0.5bps</span>
+          obs, reward, dones, info = \
+          inf_env.<span class="fn">step</span>(action)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S8 — ANOMALY + TECHNICAL ═══ -->
+  <div class="slide" id="s8">
+    <div class="gbg"></div>
+    <div class="glow" style="width:400px;height:400px;top:-100px;left:-50px;background:var(--orange);opacity:.04;">
+    </div>
+    <div class="si">
+      <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <div class="sl au d1">Slide 08 · Feature Deep Dive</div>
+          <h1 class="st au d2" style="font-size:32px;"><span class="ho">Anomaly Detection</span> & Technical Analysis
+          </h1>
+        </div>
+        <ul class="bl au d3" style="font-size:13px;">
+          <li><strong>Anomaly Detection:</strong> Statistical analysis flags unusual price movements, volume spikes, and
+            volatility regime shifts in real-time</li>
+          <li><strong>Technical Indicators:</strong> RSI, MACD, Bollinger Bands, SMA-20, EMA-12, Returns, Volatility —
+            all from live Finnhub data</li>
+          <li><strong>Finnhub Pipeline:</strong> Dynamic timeframe (D/W/M), processed via ta-lib, served through <code
+              style="color:var(--neon);font-family:'JetBrains Mono';font-size:11px;">/api/candles</code></li>
+          <li><strong>Z-score Alerts:</strong> AnomalyBanner component triggers when thresholds breach ±2σ with severity
+            grading</li>
+        </ul>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;" class="au d4">
+          <div class="mc">
+            <div class="l">Indicators</div>
+            <div class="v" style="font-size:15px;">7+</div>
+            <div class="d">RSI, MACD, BB, SMA, EMA</div>
+          </div>
+          <div class="mc">
+            <div class="l">Source</div>
+            <div class="v" style="font-size:15px;">Finnhub</div>
+            <div class="d">Real-time OHLCV stream</div>
+          </div>
+          <div class="mc">
+            <div class="l">Detection</div>
+            <div class="v" style="font-size:15px;">Z-score</div>
+            <div class="d">±2σ threshold alerts</div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:0 0 44%;display:flex;flex-direction:column;gap:12px;" class="au d3">
+        <div class="iph" style="height:160px;">
+          <img 
+    src="images/image7.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+        </div>
+        <div class="cb" style="font-size:10.5px;">
+          <span class="cmt"># data_fetcher.py — Finnhub → Indicators</span>
+          <span class="kw">from</span> ta.momentum <span class="kw">import</span> RSIIndicator
+          <span class="kw">from</span> ta.trend <span class="kw">import</span> MACD, SMAIndicator
+          <span class="kw">from</span> ta.volatility <span class="kw">import</span> BollingerBands
+
+          FEATURE_COLS = [
+          <span class="str">'open'</span>,<span class="str">'high'</span>,<span class="str">'low'</span>,<span
+            class="str">'close'</span>,<span class="str">'volume'</span>,
+          <span class="str">'rsi'</span>,<span class="str">'macd'</span>,<span class="str">'macd_signal'</span>,
+          <span class="str">'bb_upper'</span>,<span class="str">'bb_lower'</span>,<span class="str">'bb_mid'</span>,
+          <span class="str">'sma_20'</span>,<span class="str">'ema_12'</span>,
+          <span class="str">'returns'</span>,<span class="str">'volatility'</span>
+          ]
+
+          df[<span class="str">'rsi'</span>] = <span class="fn">RSIIndicator</span>(close, <span
+            class="n">14</span>).<span class="fn">rsi</span>()
+          df[<span class="str">'macd'</span>] = <span class="fn">MACD</span>(close).<span class="fn">macd</span>()
+          df[<span class="str">'volatility'</span>] = returns.<span class="fn">rolling</span>(<span
+            class="n">20</span>).<span class="fn">std</span>()
+        </div>
+        <div class="al c au d4">
+          <span style="color:var(--cyan);font-weight:600;">📊 AnomalyBanner:</span>
+          <span style="color:var(--text-dim);"> Triggers visual alerts when Z-score exceeds ±2σ thresholds — severity
+            graded</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S9 — GROQ + AUTO-INVEST ═══ -->
+  <div class="slide" id="s9">
+    <div class="gbg"></div>
+    <div class="glow" style="width:400px;height:400px;bottom:-100px;right:-50px;background:var(--red);opacity:.04;">
+    </div>
+    <div class="si">
+      <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <div class="sl au d1">Slide 09 · Smart Features</div>
+          <h1 class="st au d2" style="font-size:34px;"><span class="hr">LPU Cognitive</span> Layer & <span
+              class="hl">Auto-Invest</span></h1>
+        </div>
+        <div class="gc au d3" style="display:flex;gap:16px;align-items:flex-start;">
+          <div
+            style="width:44px;height:44px;border-radius:10px;background:rgba(255,59,48,0.1);border:2px solid var(--red);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">
+            ⚡</div>
+          <div>
+            <h3 style="font-size:15px;font-weight:700;margin-bottom:4px;">LPU-Accelerated Cognitive Layer</h3>
+            <p style="font-size:12px;color:var(--text-dim);line-height:1.5;">Inference-optimized silicon (Groq LPU) runs
+              our NL synthesis pipeline — converts raw ML outputs + sentiment signals into human-actionable trading
+              intelligence in sub-100ms latency.</p>
+            <div style="display:flex;gap:5px;margin-top:6px;"><span class="tg r">Inference-Optimized Silicon</span><span
+                class="tg r">Sub-100ms Synthesis</span><span class="tg r">Groq LPU</span></div>
+          </div>
+        </div>
+        <div class="gc au d4" style="display:flex;gap:16px;align-items:flex-start;">
+          <div
+            style="width:44px;height:44px;border-radius:10px;background:rgba(16,229,90,0.1);border:2px solid var(--neon);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">
+            🔄</div>
+          <div>
+            <h3 style="font-size:15px;font-weight:700;margin-bottom:4px;">Auto-Invest (DCA Engine)</h3>
+            <p style="font-size:12px;color:var(--text-dim);line-height:1.5;">Automated Dollar-Cost Averaging — users
+              configure recurring schedules. System uses ML predictions + sentiment to intelligently time DCA entries
+              for optimal cost basis.</p>
+            <div style="display:flex;gap:5px;margin-top:6px;"><span class="tg g">Automated DCA</span><span
+                class="tg g">ML-timed entries</span><span class="tg g">Scheduled exec</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:0 0 40%;display:flex;flex-direction:column;gap:12px;" class="au d5">
+        <div class="iph" style="height:190px;">
+          <img 
+    src="images/image8.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+        </div>
+        <div class="iph" style="height:190px;">
+          <img 
+    src="images/image9.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S10 — FRONTEND API ═══ -->
+  <div class="slide" id="s10">
+    <div class="gbg"></div>
+    <div class="glow" style="width:400px;height:400px;top:-100px;left:-50px;background:var(--blue);opacity:.04;"></div>
+    <div class="si">
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
+        <div>
+          <div class="sl au d1">Slide 10 · Frontend</div>
+          <h1 class="st au d2" style="font-size:34px;">Next.js <span class="hb">API Orchestration</span></h1>
+          <p class="ss au d3" style="font-size:12px;">Server Actions (<code
+              style="color:var(--blue);background:rgba(88,166,255,0.1);padding:1px 4px;border-radius:3px;font-family:'JetBrains Mono';font-size:10px;">'use server'</code>)
+            fetch data concurrently without blocking UI.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;" class="au d4">
+          <div class="gc" style="padding:12px;display:flex;gap:14px;align-items:flex-start;">
+            <span class="tg p" style="flex-shrink:0;">prediction.actions</span>
+            <div>
+              <p style="font-size:12px;font-weight:600;">getMLPricePrediction(symbol)</p>
+              <p style="font-size:11px;color:var(--text-dim);margin-top:2px;">110d Finnhub candles → POST OHLCV → <span
+                  style="color:var(--neon);">/api/predict</span> → 7-day forecast</p>
+            </div>
+          </div>
+          <div class="gc" style="padding:12px;display:flex;gap:14px;align-items:flex-start;">
+            <span class="tg y" style="flex-shrink:0;">sentiment.actions</span>
+            <div>
+              <p style="font-size:12px;font-weight:600;">getNewsSentiment(ticker)</p>
+              <p style="font-size:11px;color:var(--text-dim);margin-top:2px;">GET <span
+                  style="color:var(--neon);">/api/sentiment/{ticker}</span> (8s timeout) → consensus + headlines</p>
+            </div>
+          </div>
+          <div class="gc" style="padding:12px;display:flex;gap:14px;align-items:flex-start;">
+            <span class="tg c" style="flex-shrink:0;">shadow-portfolio.actions</span>
+            <div>
+              <p style="font-size:12px;font-weight:600;">getShadowPortfolioInference(ticker)</p>
+              <p style="font-size:11px;color:var(--text-dim);margin-top:2px;">POST <span
+                  style="color:var(--neon);">/api/inference</span> → agent vs baseline metrics + daily traces</p>
+            </div>
+          </div>
+        </div>
+        <div class="iph au d5" style="height:100px;">
+          <img 
+    src="images/dashboard.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+        </div>
+      </div>
+      <div style="flex:0 0 44%;" class="au d3">
+        <div style="font-family:'JetBrains Mono';font-size:10px;color:var(--text-muted);margin-bottom:5px;">
+          prediction.actions.ts</div>
+        <div class="cb" style="font-size:10.5px;">
+          <span class="str">'use server'</span>;
+
+          <span class="kw">export async function</span> <span class="fn">getMLPricePrediction</span>(
+          <span class="p">symbol</span>: <span style="color:#79c0ff;">string</span>, <span class="p">days</span> = <span
+            class="n">7</span>
+          ) {
+          <span class="cmt">// 1. Fetch 110 days OHLCV from Finnhub</span>
+          <span class="kw">const</span> candles = <span class="kw">await</span>
+          <span class="fn">getStockCandles</span>(symbol, <span class="str">'D'</span>,
+          fromSec, toSec);
+
+          <span class="cmt">// 2. POST features → HF Inference</span>
+          <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
+          <span class="str">`${URL}/api/predict`</span>, {
+          method: <span class="str">'POST'</span>,
+          next: { revalidate: <span class="n">300</span> },
+          body: JSON.<span class="fn">stringify</span>({
+          ticker: symbol,
+          open: candles.o.<span class="fn">slice</span>(-<span class="n">110</span>),
+          high: candles.h.<span class="fn">slice</span>(-<span class="n">110</span>),
+          low: candles.l.<span class="fn">slice</span>(-<span class="n">110</span>),
+          close: candles.c.<span class="fn">slice</span>(-<span class="n">110</span>),
+          volume: candles.v.<span class="fn">slice</span>(-<span class="n">110</span>),
+          })
+          });
+          <span class="kw">return</span> res.<span class="fn">json</span>();
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S11 — DATA FLOW (FILLED) ═══ -->
+  <div class="slide" id="s11">
+    <div class="gbg"></div>
+    <div class="glow"
+      style="width:400px;height:400px;top:-100px;left:50%;transform:translateX(-50%);background:var(--neon);opacity:.04">
+    </div>
+    <div class="si col" style="justify-content:flex-start;padding-top:30px;">
+      <div style="margin-bottom:10px;">
+        <div class="sl au d1">Slide 11 · Integration</div>
+        <h1 class="st au d2" style="font-size:32px;">The Unified <span class="hl">Data Flow</span></h1>
+      </div>
+      <div style="display:flex;gap:10px;align-items:stretch;flex:1;" class="au d3">
+        <div class="gc stp">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div class="sn"
+              style="background:rgba(16,229,90,0.15);border:1px solid rgba(16,229,90,0.3);color:var(--neon);">1</div>
+            <h3 style="font-size:14px;font-weight:700;">Data Ingestion</h3>
+          </div>
+          <p style="font-size:11px;color:var(--text-dim);line-height:1.5;">User navigates to <code
+              style="color:var(--neon);font-family:'JetBrains Mono';font-size:9px;">/stocks/[symbol]</code>. Next.js RSC
+            fires <code style="color:var(--blue);font-family:'JetBrains Mono';font-size:9px;">Promise.all()</code> for
+            concurrent data fetch.</p>
+          <div class="iph" style="flex:1;margin-top:8px;min-height:0;">
+            <img 
+    src="images/dashboard.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;"><span class="tg g"
+              style="font-size:8px;">Finnhub OHLCV</span><span class="tg b" style="font-size:8px;">MongoDB</span></div>
+        </div>
+        <div class="fa">→</div>
+        <div class="gc stp">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div class="sn"
+              style="background:rgba(88,166,255,0.15);border:1px solid rgba(88,166,255,0.3);color:var(--blue);">2</div>
+            <h3 style="font-size:14px;font-weight:700;">API Dispatch</h3>
+          </div>
+          <p style="font-size:11px;color:var(--text-dim);line-height:1.5;">Components fire async server actions
+            independently. Each POSTs feature payloads to FastAPI — zero blocking.</p>
+          <div class="iph" style="flex:1;margin-top:8px;min-height:0;">
+            <img 
+    src="images/dashboard.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;"><span class="tg p"
+              style="font-size:8px;">/predict</span><span class="tg c" style="font-size:8px;">/inference</span><span
+              class="tg y" style="font-size:8px;">/sentiment</span></div>
+        </div>
+        <div class="fa">→</div>
+        <div class="gc stp">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div class="sn"
+              style="background:rgba(188,140,255,0.15);border:1px solid rgba(188,140,255,0.3);color:var(--purple);">3
+            </div>
+            <h3 style="font-size:14px;font-weight:700;">Model Processing</h3>
+          </div>
+          <p style="font-size:11px;color:var(--text-dim);line-height:1.5;">FastAPI lazy-loads services with thread
+            locks. Sequential warmup with <code
+              style="color:var(--neon);font-family:'JetBrains Mono';font-size:9px;">gc.collect()</code> between loads.
+          </p>
+          <div class="iph" style="flex:1;margin-top:8px;min-height:0;">
+            <img 
+    src="images/dashboard.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;"><span class="tg p"
+              style="font-size:8px;">HF</span><span class="tg o" style="font-size:8px;">PyTorch</span><span class="tg y"
+              style="font-size:8px;">TF</span></div>
+        </div>
+        <div class="fa">→</div>
+        <div class="gc stp">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div class="sn"
+              style="background:rgba(16,229,90,0.15);border:1px solid rgba(16,229,90,0.3);color:var(--neon);">4</div>
+            <h3 style="font-size:14px;font-weight:700;">UI Interpolation</h3>
+          </div>
+          <p style="font-size:11px;color:var(--text-dim);line-height:1.5;">JSON flows back. Recharts re-renders
+            predictions, sentiment bars animate, shadow portfolio interpolates.</p>
+          <div class="iph" style="flex:1;margin-top:8px;min-height:0;">
+            <img 
+    src="images/dashboard.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;"><span class="tg g"
+              style="font-size:8px;">Recharts</span><span class="tg g" style="font-size:8px;">Framer Motion</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S12 — MARKET SHOCK ═══ -->
+  <div class="slide" id="s12">
+    <div class="gbg"></div>
+    <div class="glow"
+      style="width:500px;height:500px;top:-150px;left:50%;transform:translateX(-50%);background:var(--neon);opacity:.05">
+    </div>
+    <div class="si col" style="justify-content:center;align-items:center;">
+      <div style="text-align:center;max-width:1000px;">
+        <div class="sl au d1">Slide 12 · The Aha! Moment</div>
+        <h1 class="st au d2" style="font-size:38px;text-align:center;">Sudden Market <span class="hl">Shock</span> — In
+          Real Time</h1>
+        <p class="ss au d3" style="text-align:center;margin:0 auto 24px;max-width:650px;">Breaking news hits. Here's
+          what happens inside AlphaLens in under 3 seconds:</p>
+      </div>
+      <div style="display:flex;gap:0;width:100%;max-width:1100px;" class="au d4">
+        <div style="flex:1;border-right:2px solid rgba(16,229,90,0.15);padding:0 16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:rgba(253,212,88,0.15);border:2px solid var(--yellow);display:flex;align-items:center;justify-content:center;font-size:16px;">
+              📰</div>
+            <div>
+              <p style="font-family:'JetBrains Mono';font-size:8px;letter-spacing:2px;color:var(--yellow);">T = 0ms</p>
+              <p style="font-size:13px;font-weight:700;">News Breaks</p>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--text-dim);line-height:1.5;">Finnhub pushes headline. <code
+              style="font-family:'JetBrains Mono';font-size:9px;color:var(--yellow);">getNewsSentiment()</code> fires
+            with AbortController.</p>
+        </div>
+        <div style="flex:1;border-right:2px solid rgba(16,229,90,0.15);padding:0 16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:rgba(188,140,255,0.15);border:2px solid var(--purple);display:flex;align-items:center;justify-content:center;font-size:16px;">
+              🧠</div>
+            <div>
+              <p style="font-family:'JetBrains Mono';font-size:8px;letter-spacing:2px;color:var(--purple);">T = 500ms
+              </p>
+              <p style="font-size:13px;font-weight:700;">NLP Classifies</p>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--text-dim);line-height:1.5;">DistilRoBERTa batch-infers. Consensus flips
+            <span style="color:var(--neon);">Bullish</span> → <span style="color:var(--red);">Bearish</span>. Scores
+            update.</p>
+        </div>
+        <div style="flex:1;border-right:2px solid rgba(16,229,90,0.15);padding:0 16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:rgba(16,229,90,0.15);border:2px solid var(--neon);display:flex;align-items:center;justify-content:center;font-size:16px;">
+              📊</div>
+            <div>
+              <p style="font-family:'JetBrains Mono';font-size:8px;letter-spacing:2px;color:var(--neon);">T = 1.5s</p>
+              <p style="font-size:13px;font-weight:700;">Models Recalc</p>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--text-dim);line-height:1.5;">Price bounds shift. PPO reduces allocation.
+            Anomaly banner triggers alert.</p>
+        </div>
+        <div style="flex:1;padding:0 16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:rgba(57,210,192,0.15);border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:16px;">
+              ✨</div>
+            <div>
+              <p style="font-family:'JetBrains Mono';font-size:8px;letter-spacing:2px;color:var(--cyan);">T = 2s</p>
+              <p style="font-size:13px;font-weight:700;">UI Updates</p>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--text-dim);line-height:1.5;">Framer Motion animates. Charts re-render.
+            Sentiment recolors. Zero page reloads.</p>
+        </div>
+      </div>
+      <p style="margin-top:20px;font-size:15px;color:var(--text-dim);" class="au d5">The user reacts <span
+          style="color:var(--neon);font-weight:700;">before humanly possible</span> on any other platform.</p>
+    </div>
+  </div>
+
+  <!-- ═══ S13 — BACKEND RESILIENCE ═══ -->
+  <div class="slide" id="s13">
+    <div class="gbg"></div>
+    <div class="glow" style="width:400px;height:400px;bottom:-100px;right:-50px;background:var(--neon);opacity:.04">
+    </div>
+    <div class="si">
+      <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <div class="sl au d1">Slide 13 · Infrastructure</div>
+          <h1 class="st au d2" style="font-size:34px;">Backend <span class="hl">Resilience</span> & Scaling</h1>
+        </div>
+        <ul class="bl au d3" style="font-size:13px;">
+          <li><strong>Lazy Imports:</strong> Heavy ML imports (PyTorch, TF) deferred to first request — uvicorn binds
+            within Render's 60s timeout</li>
+          <li><strong>Thread-Safe Lock:</strong> Each service has <code
+              style="color:var(--neon);font-family:'JetBrains Mono';font-size:10px;">threading.Lock()</code> preventing
+            double-loading</li>
+          <li><strong>Sequential Warmup:</strong> Shadow → Sentiment → Prediction with <code
+              style="color:var(--neon);font-family:'JetBrains Mono';font-size:10px;">gc.collect()</code></li>
+          <li><strong>Redis Cache:</strong> Optional prediction cache (TTL 300s)</li>
+          <li><strong>Dockerized:</strong> Full containerization for cloud deploy</li>
+          <li><strong>Stripe Payments:</strong> Pro-tier via webhook integration</li>
+        </ul>
+        <div class="iph au d5" style="height:100px;">
+          <img 
+    src="images/dashboard.png" 
+    alt="AlphaLens Dashboard" 
+    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+  >
+        </div>
+      </div>
+      <div style="flex:0 0 44%;" class="au d3">
+        <div style="font-family:'JetBrains Mono';font-size:10px;color:var(--text-muted);margin-bottom:5px;">main.py —
+          Unified Backend (563 lines)</div>
+        <div class="cb" style="font-size:10.5px;">
+          <span class="cmt"># Lazy loaders — first request only</span>
+          _service_locks = {
+          <span class="str">"shadow"</span>: threading.<span class="fn">Lock</span>(),
+          <span class="str">"sentiment"</span>: threading.<span class="fn">Lock</span>(),
+          <span class="str">"prediction"</span>: threading.<span class="fn">Lock</span>(),
+          }
+
+          <span class="kw">def</span> <span class="fn">_ensure_shadow</span>():
+          <span class="kw">with</span> _service_locks[<span class="str">"shadow"</span>]:
+          <span class="cmt"># Double-check after lock</span>
+          <span class="kw">from</span> app.inference <span class="kw">import</span> <span class="fn">load_model</span>
+          <span class="kw">from</span> app.inference <span class="kw">import</span> <span
+            class="fn">run_inference</span>
+
+          <span class="cmt"># Background warmup after port bind</span>
+          <span class="kw">async def</span> <span class="fn">_background_warmup</span>():
+          <span class="kw">import</span> gc
+          <span class="kw">await</span> asyncio.<span class="fn">sleep</span>(<span class="n">2</span>)
+
+          <span class="kw">for</span> name, loader <span class="kw">in</span> [
+          (<span class="str">"shadow"</span>, _ensure_shadow),
+          (<span class="str">"sentiment"</span>,_ensure_sentiment),
+          (<span class="str">"prediction"</span>,_ensure_predict),
+          ]:
+          ok = <span class="kw">await</span> loop.<span class="fn">run_in_executor</span>(
+          <span class="kw">None</span>, loader)
+          gc.<span class="fn">collect</span>()
+          <span class="kw">await</span> asyncio.<span class="fn">sleep</span>(<span class="n">1</span>)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S14 — CONCLUSION ═══ -->
+  <div class="slide" id="s14">
+    <div class="gbg"></div>
+    <div class="glow"
+      style="width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--neon);opacity:.07;">
+    </div>
+    <div class="si" style="flex-direction:column;text-align:center;">
+      <div class="sl au d1" style="font-size:11px;">Thank You</div>
+      <h1 class="au d2" style="font-size:56px;font-weight:900;letter-spacing:-2px;margin-bottom:14px;">Alpha<span
+          class="hl">Lens</span></h1>
+      <p class="au d3" style="font-size:18px;color:var(--text-dim);margin-bottom:30px;max-width:600px;line-height:1.5;">
+        Heavy computational ML converged with lightning-fast modern web engineering.
+      </p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:30px;" class="au d4">
+        <div class="mc" style="min-width:140px;">
+          <div class="l">Backend</div>
+          <div class="v" style="font-size:16px;">FastAPI</div>
+          <div class="d">563-line unified server</div>
+        </div>
+        <div class="mc" style="min-width:140px;">
+          <div class="l">ML Models</div>
+          <div class="v" style="font-size:16px;">4 + Dual-LLM</div>
+          <div class="d">Price · NLP · RL · Anomaly</div>
+        </div>
+        <div class="mc" style="min-width:140px;">
+          <div class="l">Frontend</div>
+          <div class="v" style="font-size:16px;">Next.js 15</div>
+          <div class="d">Server Actions + Framer</div>
+        </div>
+        <div class="mc" style="min-width:140px;">
+          <div class="l">Frameworks</div>
+          <div class="v" style="font-size:16px;">PT + TF + HF</div>
+          <div class="d">PyTorch · TensorFlow</div>
+        </div>
+        <div class="mc" style="min-width:140px;">
+          <div class="l">Resilience</div>
+          <div class="v" style="font-size:16px;">Hot-Swap</div>
+          <div class="d">Multi-LLM Failover Cascade</div>
+        </div>
+      </div>
+      <p class="au d5"
+        style="font-size:28px;font-weight:300;color:var(--neon);letter-spacing:3px;font-family:'JetBrains Mono',monospace;">
+        Questions?</p>
+    </div>
+  </div>
+
+  <!-- ═══ NAV ═══ -->
+  <div class="nav">
+    <div class="br">ALPHALENS</div>
+    <div class="tr">
+      <div class="fl" id="pf"></div>
+    </div>
+    <div class="ct" id="sc">01 / 14</div>
+    <div class="bt"><button onclick="prev()">← PREV</button><button onclick="next()">NEXT →</button></div>
+  </div>
+
+  <script>
+    const S = document.querySelectorAll('.slide'); let c = 0, t = S.length;
+    function go(i) {
+      S.forEach(s => s.classList.remove('active')); S[i].classList.add('active'); c = i;
+      document.getElementById('sc').textContent = String(i + 1).padStart(2, '0') + ' / ' + String(t).padStart(2, '0');
+      document.getElementById('pf').style.width = ((i + 1) / t * 100) + '%';
+      S[i].querySelectorAll('.au').forEach(el => { el.style.animation = 'none'; el.offsetHeight; el.style.animation = ''; });
+    }
+    function next() { if (c < t - 1) go(c + 1); } function prev() { if (c > 0) go(c - 1); }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); } if (e.key === 'Home') { e.preventDefault(); go(0); }
+      if (e.key === 'End') { e.preventDefault(); go(t - 1); }
+    });
+  </script>
+</body>
+
+</html>
